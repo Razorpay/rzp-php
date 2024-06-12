@@ -12,17 +12,30 @@ Read up here for getting started and understanding the payment flow with Razorpa
 
 ## Installation
 
+
+### For Composer 
 -   If your project using composer, run the below command
 
 ```
 composer require razorpay/razorpay:2.*
 ```
 
-- If you are not using composer, download the latest release from [the releases section](https://github.com/razorpay/razorpay-php/releases).
-    **You should download the `razorpay-php.zip` file**.
-    After that, include `Razorpay.php` in your application and you can use the API as usual.
+### For Non Composer
+- Download the latest release from the [the releases section](https://github.com/razorpay/razorpay-php/releases).
+- Download razorpay-php.zip file.
+- Include Razorpay.php in your application and use it.
+- Download and Extract Requests API from [Requests Github Link](https://github.com/WordPress/Requests/releases).
+- Extract it to the libs/ directory where Razorpay.php is.
+- The dependency should look like this libs/Requests-2.0.0
+- Note : Make sure the version number is same in Razorpay.php for the line :
+```
+require_once __DIR__.'/libs/Requests-2.0.0/src/Autoload.php';
+```
 
-##Note:
+Now you can use API as usual.
+
+
+## Note:
 This PHP library follows the following practices:
 
 - Namespaced under `Razorpay\Api`
