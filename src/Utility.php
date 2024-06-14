@@ -45,6 +45,33 @@ class Utility
         self::verifySignature($payload, $actualSignature, $secret);
     }
 
+    public function verifyInvoiceSignature($attributes)
+    {
+        $actualSignature = $attributes['razorpay_signature'];
+        
+        if (isset($attributes['razorpay_invoice_id']) === true)
+        {
+            $paymentId = $attributes['razorpay_payment_id'];
+            $invId = $attributes['razorpay_invoice_id'];
+            $invStatus = $attributes['razorpay_invoice_status'];
+            
+            $invReceipt = "";
+            if(isset($attributes['razorpay_invoice_receipt'])==true)
+                $invReceipt = $attributes['razorpay_invoice_receipt'];
+
+            $payload = $invId . '|' . $invReceipt . '|' . $invStatus . '|' . $paymentId;
+        }
+        else
+        {
+            throw new Errors\SignatureVerificationError(
+                'razorpay_invoice_id must be present.');
+        }
+
+        $secret = Api::getSecret();
+
+        self::verifySignature($payload, $actualSignature, $secret);
+    }
+
     public function verifyWebhookSignature($payload, $actualSignature, $secret)
     {
         self::verifySignature($payload, $actualSignature, $secret);
