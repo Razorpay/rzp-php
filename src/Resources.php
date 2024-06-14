@@ -6,7 +6,7 @@ use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
 
-class Resource implements ArrayAccess, IteratorAggregate
+class Resources implements ArrayAccess, IteratorAggregate
 {
     protected $attributes = array();
     

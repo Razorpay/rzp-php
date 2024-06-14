@@ -4,7 +4,7 @@ namespace Razorpay\Api;
 
 use Razorpay\Api\Errors;
 
-class Entity extends Resource implements ArrayableInterface
+class Entity extends Resources implements ArrayableInterface
 {
     protected $attributes = array();
  /**
