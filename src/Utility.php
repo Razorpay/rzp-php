@@ -17,6 +17,11 @@ class Utility
             $orderId = $attributes['razorpay_order_id'];
 
             $payload = $orderId . '|' . $paymentId;
+        } else if (isset($attributes['order_id']) === true) {
+            // Changes made to reflect documentation: https://razorpay.com/docs/payment-gateway/quick-integration/#generate-signature-on-your-server 
+            
+            $orderId = $attributes['order_id'];
+            $payload = $orderId . '|' . $paymentId
         }
         else if (isset($attributes['razorpay_subscription_id']) === true)
         {
