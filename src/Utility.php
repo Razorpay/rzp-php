@@ -2,6 +2,9 @@
 
 namespace Razorpay\Api;
 
+use Requests;
+use WpOrg\Requests\Hooks;
+
 class Utility
 {
     const SHA256 = 'sha256';
@@ -87,5 +90,58 @@ class Utility
         }
 
         return false;
+    }
+
+    public function amountToLowerUnit($amount, $currency): int
+    {
+        $hooks = new Hooks();
+
+        $request = new Request();
+
+        $hooks->register('curl.before_send', array($request, 'setCurlSslOpts'));
+
+        $options = array(
+            'auth' => array(Api::getKey(), Api::getSecret()),
+            'hook' => $hooks,
+            'timeout' => 60
+        );
+        
+        $headers = [];
+
+        $url = 'https://express.razorpay.com/v1/currency-list';
+
+        $response = Requests::request($url, $headers, [], 'GET', $options); 
+
+        if (file_exists(dirname(__FILE__) . '/rzp_currency_list.json') === true)
+        {
+            if (filemtime(dirname(__FILE__) . '/rzp_currency_list.json') < (time() - 24*60*60))
+            {
+                file_put_contents(dirname(__FILE__) . '/rzp_currency_list.json', $response->body);
+            }
+        }
+        else
+        {
+            file_put_contents(dirname(__FILE__) . '/rzp_currency_list.json', $response->body);
+        }
+
+        $currencyListJson = file_get_contents(dirname(__FILE__) . '/rzp_currency_list.json');
+
+        $currencyListArray = json_decode($currencyListJson, 1);
+
+        $lowerAmount = null;
+
+        if (array_key_exists($currency, $currencyListArray['currency_list']))
+        {
+            $exponent = $currencyListArray['currency_list'][$currency]['Exponent'];
+
+            $lowerAmount = (int) round($amount * pow(10, $exponent));
+        }
+
+        if (empty($lowerAmount))
+        {
+            $lowerAmount = 0;
+        }
+
+        return $lowerAmount;
     }
 }

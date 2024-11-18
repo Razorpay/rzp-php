@@ -384,6 +384,12 @@ class CoverageTest extends TestCase
       $utility->testPaymentVerification();
       $utility->testPaymentLinkVerification();
       $utility->testSubscriptionVerification();
+
+      $currencyConversion = new AmountToLowerUnitTest();
+      $currencyConversion->setup();
+      $currencyConversion->testTwoDecimalAmount();
+      $currencyConversion->testThreeDecimalAmount();
+      $currencyConversion->testZeroDecimalAmount();
     }
 
     /**
