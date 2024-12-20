@@ -8,10 +8,14 @@ class ErrorCode
     const SERVER_ERROR                      = 'SERVER_ERROR';
     const GATEWAY_ERROR                     = 'GATEWAY_ERROR';
 
-    public static function exists($code)
+    /**
+     * @param string $code
+     * @return bool
+     */
+    public static function exists(string $code): bool
     {
         $code = strtoupper($code);
 
-        return defined(get_class() . '::' . $code);
+        return defined(static::class. '::' . $code);
     }
 }
