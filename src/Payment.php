@@ -45,11 +45,9 @@ class Payment extends Entity
      */
     public function refund($attributes = array())
     {
-        $refund = new Refund;
+        $relativeUrl = $this->getEntityUrl() . $this->id . '/refund';
 
-        $attributes = array_merge($attributes, array('payment_id' => $this->id));
-
-        return $refund->create($attributes);
+        return $this->request('POST', $relativeUrl, $attributes);
     }
 
     /**
